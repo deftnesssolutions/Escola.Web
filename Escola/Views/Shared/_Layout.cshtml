@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Controle de Alunos</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -16,14 +16,85 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Controle de Estoque", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
+
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
+                @if (Request.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Cadastros
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Grupo de produtos", "GrupoProduto", "Cadastro")</li>
+                                <li>@Html.ActionLink("Marcas de produtos", "MarcaProduto", "Cadastro")</li>
+                                <li>@Html.ActionLink("Locais de armazenamento", "LocalProduto", "Cadastro")</li>
+                                <li>@Html.ActionLink("Unidades de Medida", "UnidadeMedida", "Cadastro")</li>
+                                <li class="nav-divider"></li>
+                                <li>@Html.ActionLink("Produtos", "Produtos", "Cadastro")</li>
+                                <li>@Html.ActionLink("Paises", "Pais", "Cadastro")</li>
+                                <li>@Html.ActionLink("Estados", "Estado", "Cadastro")</li>
+                                <li>@Html.ActionLink("Cidades", "Cidade", "Cadastro")</li>
+                                <li class="nav-divider"></li>
+                                <li>@Html.ActionLink("Fornecedores", "Fornecedor", "Cadastro")</li>
+                                <li>@Html.ActionLink("Perfis de usuario", "PerfilUsuario", "Cadastro")</li>
+                                <li>@Html.ActionLink("Usuarios", "Usuario", "Cadastro")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Operações
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Entrada de produtos", "EntradaEstoque", "Operacao")</li>
+                                <li>@Html.ActionLink("Saida de produtos", "SaidaEstoque", "Operacao")</li>
+                                <li>@Html.ActionLink("Lançamento de perdas de produtos", "LancPerdaProduto", "Operacao")</li>
+                                <li>@Html.ActionLink("Inventario de estoque", "Inventario", "Operacao")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Relatorios
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Posição de estoque", "PosicaoEstoque", "Relatorio")</li>
+                                <li>@Html.ActionLink("Ressuprimento", "Ressuprimento", "Relatorio")</li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Graficos
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Perdas por mes", "PerdaMes", "Grafico")</li>
+                                <li>@Html.ActionLink("Entradas vs Saidas por mes", "EntradaSaidaMes", "Grafico")</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    using (Html.BeginForm("LogOff", "Conta", FormMethod.Post, new { id = "logoffForm" }))
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>@Html.ActionLink("Sobre", "Sobre", "Home")</li>
+                            <li><a href="#">Olá @User.Identity.Name</a></li>
+                            <li><a href="javascript:document.getElementById('logoffForm').submit()">Sair</a></li>
+                        </ul>
+                    }
+
+                }
+                else
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Login", "Login", "Conta")</li>
+                    </ul>
+                }
             </div>
         </div>
     </div>
@@ -31,7 +102,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Controle de Alunos</p>
         </footer>
     </div>
 
