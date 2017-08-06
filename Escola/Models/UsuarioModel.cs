@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Dados;
+using Dados.DAO;
+using Dados.Entities;
+using Dados.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
@@ -10,41 +14,43 @@ namespace Escola.Models
 {
     public class UsuarioModel
     {
-        public int id { get; set; }
+        
+        public int codigo { get; set; }
         [Required(ErrorMessage = "Informe o nome")]
         public string nome { get; set; }
+        public string cpf { get; set; }
+        public string sexo { get; set; }
+        public string telefone { get; set; }
+        public DateTime data_cadastro { get; set; }
+        public int cidade_id { get; set; }
         [Required(ErrorMessage = "Informe o Login")]
-        public string login { get; set; }
-        [Required(ErrorMessage = "Informe a nome")]
+        public string email { get; set; }
+        [Required(ErrorMessage = "Informe a senha")]
         public string senha { get; set; }
 
         public static UsuarioModel validarUsuario(string login, string senha)
         {
             UsuarioModel ret = null;
-            using (var conexao = new SqlConnection())
+            using (Iconnection Conexion = new Conexion())
             {
-                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["principal"].ConnectionString;
-                conexao.Open();
-                using (var comando = new SqlCommand())
+                IDao<Usuario> dao = new DaoUsuario(Conexion);
+                Usuario entity = dao.FindOrDefaultParam(login, CriptoHelper.HashMD5(senha));
+                if (entity != null)
                 {
-                    comando.Connection = conexao;
-                    comando.CommandText = string.Format("SELECT * FROM usuario WHERE login=@login AND senha=@senha",
-                        login, CriptoHelper.HashMD5(senha));
-                    comando.Parameters.Add("@login", SqlDbType.VarChar).Value = login;
-                    comando.Parameters.Add("@senha", SqlDbType.VarChar).Value = CriptoHelper.HashMD5(senha);
-
-                    var reader = comando.ExecuteReader();
-                    if (reader.Read())
+                    ret = new UsuarioModel
                     {
-                        ret = new UsuarioModel
-                        {
-                            id = (int)reader["id"],
-                            nome = (string)reader["nome"],
-                            login = (string)reader["login"],
-                            senha = (string)reader["senha"]
-                        };
-                    }
+                        codigo = entity.codigo,
+                        nome = entity.nome,
+                        cpf = entity.cpf,
+                        sexo = entity.sexo,
+                        telefone = entity.telefone,
+                        data_cadastro = entity.data_cadastro,
+                        cidade_id = entity.cidade_id,
+                        email = entity.email,
+                        senha = entity.senha
+                    };
                 }
+                
             }
             return ret;
         }
@@ -53,28 +59,28 @@ namespace Escola.Models
         {
             var ret = new List<UsuarioModel>();
 
-            using (var conexao = new SqlConnection())
+            using (Iconnection conexion = new Conexion())
             {
-                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["principal"].ConnectionString;
-                conexao.Open();
-                using (var comando = new SqlCommand())
-                {
-                    comando.Connection = conexao;
-                    comando.CommandText = "SELECT * FROM usuario ORDER BY id";
-                    var reader = comando.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        ret.Add(new UsuarioModel
-                        {
-                            id = (int)reader["id"],
-                            nome = (string)reader["nome"],
-                            login = (string)reader["login"],
-                            senha = (string)reader["senha"]
-                        });
-                    }
+                IDao<Usuario> dao = new DaoUsuario(conexion);
+                Usuario usuario = new Usuario();
 
+                foreach (Usuario u in dao.All())
+                {
+                    ret.Add(new UsuarioModel
+                    {
+                        codigo = u.codigo,
+                        nome = u.nome,
+                        cpf = u.cpf,
+                        sexo = u.sexo,
+                        telefone = u.telefone,
+                        data_cadastro = u.data_cadastro,
+                        cidade_id = u.cidade_id,
+                        email = u.email,
+                        senha = u.senha
+                    });
                 }
             }
+
             return ret;
         }
 
@@ -82,27 +88,24 @@ namespace Escola.Models
         {
             UsuarioModel ret = null;
 
-            using (var conexao = new SqlConnection())
+            using (Iconnection Conexion = new Conexion())
             {
-                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["principal"].ConnectionString;
-                conexao.Open();
-                using (var comando = new SqlCommand())
+                IDao<Usuario> dao = new DaoUsuario(Conexion);
+                Usuario entity = dao.FindOrDefault(id);
+                if(entity !=null)
                 {
-                    comando.Connection = conexao;
-                    comando.CommandText = string.Format("SELECT * FROM usuario WHERE id=@id");
-                    comando.Parameters.Add("@id", SqlDbType.Int).Value = id;
-                    var reader = comando.ExecuteReader();
-                    if (reader.Read())
+                    ret = new UsuarioModel
                     {
-                        ret = new UsuarioModel
-                        {
-                            id = (int)reader["id"],
-                            nome = (string)reader["nome"],
-                            login = (string)reader["login"],
-                            senha = (string)reader["senha"]
-                        };
-                    }
-
+                        codigo = entity.codigo,
+                        nome = entity.nome,
+                        cpf = entity.cpf,
+                        sexo = entity.sexo,
+                        telefone = entity.telefone,
+                        data_cadastro = entity.data_cadastro,
+                        cidade_id = entity.cidade_id,
+                        email = entity.email,
+                        senha = entity.senha
+                    };
                 }
             }
             return ret;
@@ -111,20 +114,11 @@ namespace Escola.Models
         public static bool excluirPeloId(int id)
         {
             var ret = false;
-            if (recuperarPeloId(id) != null)
+            using (Iconnection Conexion = new Conexion())
             {
-                using (var conexao = new SqlConnection())
-                {
-                    conexao.ConnectionString = ConfigurationManager.ConnectionStrings["principal"].ConnectionString;
-                    conexao.Open();
-                    using (var comando = new SqlCommand())
-                    {
-                        comando.Connection = conexao;
-                        comando.CommandText = "DELETE FROM usuario WHERE id= @id";
-                        comando.Parameters.Add("@id", SqlDbType.Int).Value = id;
-                        ret = (comando.ExecuteNonQuery()) > 0;
-                    }
-                }
+                IDao<Usuario> dao = new DaoUsuario(Conexion);
+                Usuario entity = dao.FindOrDefault(id);
+                 ret = dao.Delete(entity);
             }
             return ret;
         }
@@ -132,43 +126,51 @@ namespace Escola.Models
         public int salvar()
         {
             var ret = 0;
-            var model = recuperarPeloId(id);
+            var model = recuperarPeloId(codigo);
 
-            using (var conexao = new SqlConnection())
+            if (model == null)
             {
-                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["principal"].ConnectionString;
-                conexao.Open();
-                using (var comando = new SqlCommand())
+                using (Iconnection Conexion = new Conexion())
                 {
-                    comando.Connection = conexao;
-                    if (model == null)
-                    {
-                        comando.CommandText = "INSERT INTO usuario (nome,login,senha) VALUES(@nome,@login,@senha); SELECT convert(int, SCOPE_IDENTITY())";
-                        comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.nome;
-                        comando.Parameters.Add("@login", SqlDbType.VarChar).Value = this.login;
-                        comando.Parameters.Add("@senha", SqlDbType.VarChar).Value = CriptoHelper.HashMD5(this.senha);
-                        ret = (int)comando.ExecuteScalar();
-                    }
-                    else
-                    {
-                        comando.CommandText =
-                            "UPDATE usuario SET nome = @nome, login = @login" +
-                           (!string.IsNullOrEmpty(this.senha) ? ", senha= @senha" : "") +
-                           " WHERE id=@id ";
-                        comando.Parameters.Add("@id", SqlDbType.Int).Value = this.id;
-                        comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.nome;
-                        comando.Parameters.Add("@login", SqlDbType.VarChar).Value = this.login;
-                        if (!string.IsNullOrEmpty(this.senha))
-                        {
-                            comando.Parameters.Add("@senha", SqlDbType.VarChar).Value = CriptoHelper.HashMD5(this.senha);
-                        }
-                        if (comando.ExecuteNonQuery() > 0)
-                        {
-                            ret = this.id;
-                        }
-                    }
+                    IDao<Usuario> dao = new DaoUsuario(Conexion);
+                    Usuario entity = new Usuario();//Objeto tipo Modulos(tabela)
+                    entity.nome = nome;
+                    entity.cpf = cpf;
+                    entity.sexo = sexo;
+                    entity.telefone = telefone;
+                    entity.data_cadastro = data_cadastro;
+                    entity.cidade_id = cidade_id;
+                    entity.email = email;
+                    entity.senha = CriptoHelper.HashMD5(senha);
+                    // gravo los datos como registro en la tabla modulos
+                    dao.Insert(entity);
+                    ret = entity.codigo;
                 }
             }
+            else
+            {
+                using (Iconnection Conexion = new Conexion())
+                {
+                    IDao<Usuario> dao = new DaoUsuario(Conexion);
+                    Usuario entity = new Usuario();//Objeto tipo Modulos(tabela)
+                    entity.nome = nome;
+                    entity.cpf = cpf;
+                    entity.sexo = sexo;
+                    entity.telefone = telefone;
+                    entity.data_cadastro = data_cadastro;
+                    entity.cidade_id = cidade_id;
+                    entity.email = email;
+                    if (!string.IsNullOrEmpty(this.senha))
+                    {
+                        entity.senha = CriptoHelper.HashMD5(senha);
+                    }
+                    
+                    // gravo los datos como registro en la tabla modulos
+                    dao.Insert(entity);
+                    ret = entity.codigo;
+                }
+            }
+
             return ret;
         }
     }

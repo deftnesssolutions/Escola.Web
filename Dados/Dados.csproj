@@ -62,6 +62,7 @@
     <Compile Include="Entities\MaeAluno.cs" />
     <Compile Include="Entities\PaiAluno.cs" />
     <Compile Include="Entities\Usuario.cs" />
+    <Compile Include="Helpers\CriptoHelper.cs" />
     <Compile Include="Iconnection.cs" />
     <Compile Include="IDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

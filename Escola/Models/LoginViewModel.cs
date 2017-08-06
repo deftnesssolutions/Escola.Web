@@ -15,7 +15,7 @@ namespace Escola.Models
         [DataType(DataType.Password)]
         [Display(Name = "Senha:")]
         public string Senha { get; set; }
-        [Display(Name = "Lembrar Me:")]
+        [Display(Name = "Me Inscrivir:")]
         public bool LembrarMe { get; set; }
     }
 }

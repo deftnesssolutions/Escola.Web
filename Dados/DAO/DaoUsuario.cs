@@ -89,8 +89,8 @@ namespace Dados.DAO
                         entity.cpf = reader.IsDBNull(2) == false ? reader.GetString(2).ToString() : "";
                         entity.sexo = reader.IsDBNull(3) == false ? reader.GetString(3).ToString() : "";
                         entity.telefone = reader.IsDBNull(4) == false ? reader.GetString(4).ToString() : "";
-                        entity.data_cadastro = reader.IsDBNull(6) == false ? DateTime.Parse(reader.GetDateTime(6).ToString()) : DateTime.MinValue;
-                        entity.cidade_id = reader.GetInt32(0);
+                        entity.data_cadastro = reader.IsDBNull(5) == false ? DateTime.Parse(reader.GetDateTime(5).ToString()) : DateTime.MinValue;
+                        entity.cidade_id = reader.GetInt32(6);
                         entity.email = reader.IsDBNull(7) == false ? reader.GetString(7).ToString() : "";
                         entity.senha = reader.IsDBNull(8) == false ? reader.GetString(8).ToString() : "";
                     }
@@ -105,6 +105,7 @@ namespace Dados.DAO
             {
                 string query = "INSERT INTO usuario(nome, cpf, sexo, telefone, data_cadastro, cidade_id, email, senha ) ";
                 query += "VALUES(@nome, @cpf, @sexo, @telefone, @data_cadastro, @cidade_id, @email, @senha)";
+                //query += "; SELECT CURRVAL('usuarioseq');";
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = query;
                 
@@ -144,11 +145,45 @@ namespace Dados.DAO
             }
         }
 
+        public Usuario FindOrDefaultParam(string param1, string param2)
+        {
+            Usuario entity = null;
+            using (NpgsqlCommand cmd = _conexion.Get().CreateCommand())
+            {
+                string query = "SELECT codigo, nome, cpf, sexo, telefone, data_cadastro, cidade_id,";
+                query += "email, senha FROM usuario WHERE email=@email AND senha=@senha";
+
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = query;
+                cmd.Parameters.Add("@email", NpgsqlDbType.Varchar).Value = param1;
+                cmd.Parameters.Add("@senha", NpgsqlDbType.Varchar).Value = param2;
+
+                using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        entity = new Usuario();
+                        reader.Read();
+                        entity.codigo = reader.GetInt32(0);
+                        entity.nome = reader.IsDBNull(1) == false ? reader.GetString(1).ToString() : "";
+                        entity.cpf = reader.IsDBNull(2) == false ? reader.GetString(2).ToString() : "";
+                        entity.sexo = reader.IsDBNull(3) == false ? reader.GetString(3).ToString() : "";
+                        entity.telefone = reader.IsDBNull(4) == false ? reader.GetString(4).ToString() : "";
+                        entity.data_cadastro = reader.IsDBNull(5) == false ? DateTime.Parse(reader.GetDateTime(5).ToString()) : DateTime.MinValue;
+                        entity.cidade_id = reader.GetInt32(6);
+                        entity.email = reader.IsDBNull(7) == false ? reader.GetString(7).ToString() : "";
+                        entity.senha = reader.IsDBNull(8) == false ? reader.GetString(8).ToString() : "";
+                    }
+                }
+            }
+            return entity;
+        }
 
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
+        
     }
 }

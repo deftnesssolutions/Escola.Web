@@ -1,0 +1,39 @@
+﻿@model Escola.Models.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+
+<style>
+    body {
+  background: #456;
+  font-family: 'Open Sans', sans-serif;
+}
+</style>
+
+    <div class="login">
+        <div class="login-triangle"></div>
+
+        <h2 class="login-header">Entrar no Sistema</h2>      
+                @using (Html.BeginForm("Login", "Conta", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login-container", role = "form" }))
+                {
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <p>
+                        @Html.TextBoxFor(m => m.Usuario, new { type = "email", placeholder = "Email" })
+                    @Html.ValidationMessageFor(m => m.Usuario, "", new { @class = "text-danger" })
+                    </p>
+
+                    <p>
+                        @Html.PasswordFor(m => m.Senha, new { type = "password", placeholder = "Password" })
+                        @Html.ValidationMessageFor(m => m.Senha, "", new { @class = "text-danger" })
+                    </p>
+                    <a href=""> Me inscrever</a>
+
+                    <p><input type="submit" class="btn btn-success" value="Entrar" /></p>
+                }
+  </div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueyval")
+}

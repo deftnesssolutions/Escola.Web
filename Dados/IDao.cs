@@ -14,5 +14,6 @@ namespace Dados
         bool Delete(T model);
         T FindOrDefault(params object[] keys);
         IEnumerable<T> All();
+        T FindOrDefaultParam(string param1, string param2);
     }
 }
