@@ -160,6 +160,16 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="fallback\indicator.png" />
+    <Content Include="fallback\navBG.gif" />
+    <Content Include="fallback\navLeft.gif" />
+    <Content Include="fallback\navLeftIE.gif" />
+    <Content Include="fallback\navOverBG.gif" />
+    <Content Include="fallback\navOverBG2.gif" />
+    <Content Include="fallback\navOverLeft.gif" />
+    <Content Include="fallback\navRight.gif" />
+    <Content Include="fallback\subnavBG.png" />
+    <Content Include="fallback\subOverBG.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
