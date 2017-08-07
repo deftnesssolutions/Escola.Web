@@ -53,6 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conexion.cs" />
+    <Compile Include="DAO\DaoAluno.cs" />
+    <Compile Include="DAO\DaoBairro.cs" />
+    <Compile Include="DAO\DaoEnderecoAluno.cs" />
+    <Compile Include="DAO\DaoEstado.cs" />
+    <Compile Include="DAO\DaoMaeAluno.cs" />
+    <Compile Include="DAO\DaoPaiAluno.cs" />
     <Compile Include="DAO\DaoUsuario.cs" />
     <Compile Include="Entities\Aluno.cs" />
     <Compile Include="Entities\Bairro.cs" />

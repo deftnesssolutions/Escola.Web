@@ -148,11 +148,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CadastroController.cs" />
     <Compile Include="Controllers\ContaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Cidade.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -160,16 +162,6 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="fallback\indicator.png" />
-    <Content Include="fallback\navBG.gif" />
-    <Content Include="fallback\navLeft.gif" />
-    <Content Include="fallback\navLeftIE.gif" />
-    <Content Include="fallback\navOverBG.gif" />
-    <Content Include="fallback\navOverBG2.gif" />
-    <Content Include="fallback\navOverLeft.gif" />
-    <Content Include="fallback\navRight.gif" />
-    <Content Include="fallback\subnavBG.png" />
-    <Content Include="fallback\subOverBG.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -205,6 +197,7 @@
     <Content Include="Views\Home\Sobre.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Conta\Login.cshtml" />
+    <Content Include="Views\Cadastro\Usuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

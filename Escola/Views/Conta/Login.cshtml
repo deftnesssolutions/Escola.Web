@@ -13,27 +13,29 @@
     <div class="login">
         <div class="login-triangle"></div>
 
-        <h2 class="login-header">Entrar no Sistema</h2>      
-                @using (Html.BeginForm("Login", "Conta", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login-container", role = "form" }))
-                {
+        <h2 class="login-header">Entrar no Sistema</h2>    
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Conta", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login-container", role = "form" }))
+            {
 
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                    <p>
-                        @Html.TextBoxFor(m => m.Usuario, new { type = "email", placeholder = "Email" })
+                <p>
+                    @Html.TextBoxFor(m => m.Usuario, new { type = "email", placeholder = "Email" })
                     @Html.ValidationMessageFor(m => m.Usuario, "", new { @class = "text-danger" })
-                    </p>
+                </p>
 
                     <p>
                         @Html.PasswordFor(m => m.Senha, new { type = "password", placeholder = "Password" })
                         @Html.ValidationMessageFor(m => m.Senha, "", new { @class = "text-danger" })
                     </p>
-                    <a href=""> Me inscrever</a>
+                    <h3> @Html.ActionLink("Me Inscrever", "Usuario", "Cadastro")</h3>
 
-                    <p><input type="submit" class="btn btn-success" value="Entrar" /></p>
-                }
+                    <p><input type="submit" value="Entrar" /></p>
+            }
+        </section>
+
   </div>
-
 @section Scripts{
     @Scripts.Render("~/bundles/jqueyval")
 }

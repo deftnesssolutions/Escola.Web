@@ -2,7 +2,7 @@
 body {
    padding-top: 50px;
     padding-bottom: 20px;
-    background: #efeff5;
+    
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -220,9 +220,92 @@ nav ul {
  }
  
   /* main nav menu */
-.header_menu { background:#000000; height:80px;}
+.header_menu {position:relative; background:#000000; height:80px;top:1%;}
 .header_menu_res{margin:0px; width:540px;}
 
+/*FORMULARIO CADASTRO*/
+.form_cadastro{
+    width:inherit;
+    height:400px;
+    background-color:cadetblue;
+    margin:20px;
+}
+.form-content{
+    width:400px;
+    height:400px;
+    position:relative;
+    left:5%;top:5%;
+}
+
+.appearance-select{
+   -webkit-appearance: none;  /* Remove estilo padrão do Chrome */
+   -moz-appearance: none; /* Remove estilo padrão do FireFox */
+   appearance: none; /* Remove estilo padrão do FireFox*/
+   background: url(http://www.webcis.com.br/images/imagens-noticias/select/ico-seta-appearance.gif) no-repeat #eeeeee;  /* Imagem de fundo (Seta) */
+   background-position: 218px center;  /*Posição da imagem do background*/
+   width: 250px; /* Tamanho do select, maior que o tamanho da div "div-select" */
+   height:30px; /* Altura do select, importante para que tenha a mesma altura em todo os navegadores */
+   border:1px solid #ddd;
+}
+
+.input-text{   
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    box-shadow: 1px 1px 2px #333333;    
+    -moz-box-shadow: 1px 1px 2px #333333;
+    -webkit-box-shadow: 1px 1px 2px #333333;
+    background: #cccccc; 
+    border:1px solid #000000;
+    width: 250px; 
+   height:30px;
+}
+
+textarea{
+    border: 1px solid #000000;
+    background:#cccccc;
+    width:150px;
+    height:100px;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    box-shadow: 1px 1px 2px #333333;    
+    -moz-box-shadow: 1px 1px 2px #333333;
+    -webkit-box-shadow: 1px 1px 2px #333333;
+}
+ 
+input[type=text]:hover,input[type=email]:hover,input[type=password]:hover, textarea:hover{ 
+         background: #ffffff; border:1px solid #990000;
+}
+ 
+input[type=submit]{
+        background:#006699;
+        color:#ffffff;
+}
+
+.submin-btn {
+    background: #28d;
+    border-color: transparent;
+    color: #fff;
+    cursor: pointer;
+}
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button2 {background-color: #008CBA;} /* Blue */
+.button3 {background-color: #f44336;} /* Red */ 
+.button4 {background-color: #e7e7e7; color: black;} /* Gray */ 
+.button5 {background-color: #555555;} /* Black */
 
 
 

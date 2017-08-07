@@ -1,0 +1,107 @@
+﻿
+@model Escola.Models.UsuarioModel
+@{
+    ViewBag.Title = "Cadastro de Usuarios";
+}
+<div class="form_cadastro">
+    <div class="form-content">
+        <div id="msg_mensagem_aviso" class="text-danger invisivel"></div>
+        <!-- DADOS PESSOAIS-->
+        <fieldset>
+            @Html.AntiForgeryToken()
+            <legend>Dados Pessoais</legend>
+            <table cellspacing="10">
+                <tr>
+                    <td>
+                        @Html.Label("txt_nome", "Nome", new { @class = "" })
+                    </td>
+                    <td align="left">
+                        @Html.TextBox("txt_nome", null, new { @class = "input-text", type="text" })
+                    </td>
+                    <td>
+                        @Html.Label("txt_sex", "Sexo", new { @class = "" })
+                    </td>
+                    <td align="left">
+                        @Html.DropDownList("sexo",(SelectList) ViewBag.DropSexoValues, new {@class="appearance-select" });
+                    </td>
+                    <td>
+                        <label for="cidade">Cidade:</label>
+                    </td>
+                    <td align="left">
+                        <select name="cidade" class="appearance-select">
+                            <option value="">Selecione</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="rg">RG: </label>
+                    </td>
+                    <td align="left">
+                        <input type="text" class="input-text" name="rg" size="13" maxlength="13">
+                    </td>
+
+                    <td>
+                        <label>CPF:</label>
+                    </td>
+                    <td align="left">
+                        <input type="text" name="cpf" class="input-text" size="9" maxlength="9">
+                    </td>
+
+                    <td>
+                        <label>Telefone:</label>
+                    </td>
+                    <td align="left">
+                        <input type="text" name="telefone" class="input-text" size="9" maxlength="10">
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <br />
+
+        <!-- DADOS DE LOGIN -->
+        <fieldset>
+            @Html.AntiForgeryToken()
+            <legend>Dados de login</legend>
+            <table cellspacing="10">
+                <tr>
+                    <td>
+                        <label for="email">E-mail: </label>
+                    </td>
+                    <td align="left">
+                        <input type="email" class="input-text" name="email">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pass">Senha: </label>
+                    </td>
+                    <td align="left">
+                        <input type="password" class="input-text" name="pass">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="passconfirm">Confirme a senha: </label>
+                    </td>
+                    <td align="left">
+                        <input type="password" class="input-text" name="passconfirm">
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <br />
+        <div><input type="submit" class="button2" value="Cadastrar"></div>
+
+    </div>
+</div>
+
+
+
+
+
+
+

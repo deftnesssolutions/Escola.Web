@@ -18,7 +18,7 @@ namespace Dados.Entities
         public int idade { get; set; }
         public string sexo { get; set; }
         public string email { get; set; }
-        public string telefono { get; set; }
+        public string telefone { get; set; }
         public DateTime data_cadastro { get; set; }
         public int pai_id { get; set; }
         public int mae_id { get; set; }

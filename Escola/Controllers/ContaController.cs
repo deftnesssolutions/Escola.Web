@@ -30,7 +30,7 @@ namespace Escola.Controllers
             var usuario = UsuarioModel.validarUsuario(login.Usuario, login.Senha);
             if (usuario != null)
             {
-                FormsAuthentication.SetAuthCookie(usuario.nome, login.LembrarMe);
+                FormsAuthentication.SetAuthCookie(usuario.Nome, login.LembrarMe);
                 if (Url.IsLocalUrl(returnUrl))
                 {
                     return Redirect(returnUrl);
@@ -53,7 +53,7 @@ namespace Escola.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Conta");
         }
     }
 }

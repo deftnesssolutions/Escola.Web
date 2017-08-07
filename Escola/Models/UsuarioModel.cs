@@ -14,19 +14,57 @@ namespace Escola.Models
 {
     public class UsuarioModel
     {
-        
-        public int codigo { get; set; }
-        [Required(ErrorMessage = "Informe o nome")]
-        public string nome { get; set; }
-        public string cpf { get; set; }
-        public string sexo { get; set; }
-        public string telefone { get; set; }
-        public DateTime data_cadastro { get; set; }
-        public int cidade_id { get; set; }
-        [Required(ErrorMessage = "Informe o Login")]
-        public string email { get; set; }
+
+        public int Codigo { get; set; }
+
+        [Required(ErrorMessage = "Informe o Nome")]
+        [Display(Name = "Nome Completo:")]
+        public string Nome { get; set; }
+
+        [Required(ErrorMessage = "Informe o Cpf")]
+        [Display(Name = "CPF:")]
+        public string Cpf { get; set; }
+
+        [Required(ErrorMessage = "Informe o Sexo")]
+        [Display(Name = "Sexo:")]
+        public string Sexo { get; set; }
+
+        [Display(Name = "Telefone:")]
+        public string Telefone { get; set; }
+
+        /*[Display(Name = "Data Cadastro:")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [Editable(false)]
+        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+        public DateTime data_cadastro { get; set; }*/
+        private DateTime _data_cadastro = DateTime.MinValue;
+        //public DateTime CreatedOn;
+        [Display(Name = "Data Cadastro:")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        public DateTime Data_cadastro
+        {
+            get
+            {
+                return (_data_cadastro == DateTime.MinValue) ? DateTime.Now : _data_cadastro;
+            }
+            set { _data_cadastro = value; }
+        }
+
+        [Required(ErrorMessage = "Informe a Cidade")]
+        [Display(Name = "Cidade:")]
+        public int Cidade_id { get; set; }
+
+        [Required(ErrorMessage = "Informe seu e-mail como Login")]
+        [Display(Name = "Login:")]
+        [EmailAddress(ErrorMessage = "E-mail em formato inválido.")]
+
+        public string Email { get; set; }
+
         [Required(ErrorMessage = "Informe a senha")]
-        public string senha { get; set; }
+        [DataType(DataType.Password)]
+        [Display(Name = "Senha:")]
+        public string Senha { get; set; }
 
         public static UsuarioModel validarUsuario(string login, string senha)
         {
@@ -39,15 +77,15 @@ namespace Escola.Models
                 {
                     ret = new UsuarioModel
                     {
-                        codigo = entity.codigo,
-                        nome = entity.nome,
-                        cpf = entity.cpf,
-                        sexo = entity.sexo,
-                        telefone = entity.telefone,
-                        data_cadastro = entity.data_cadastro,
-                        cidade_id = entity.cidade_id,
-                        email = entity.email,
-                        senha = entity.senha
+                        Codigo = entity.codigo,
+                        Nome = entity.nome,
+                        Cpf = entity.cpf,
+                        Sexo = entity.sexo,
+                        Telefone = entity.telefone,
+                        Data_cadastro = entity.data_cadastro,
+                        Cidade_id = entity.cidade_id,
+                        Email = entity.email,
+                        Senha = entity.senha
                     };
                 }
                 
@@ -64,19 +102,19 @@ namespace Escola.Models
                 IDao<Usuario> dao = new DaoUsuario(conexion);
                 Usuario usuario = new Usuario();
 
-                foreach (Usuario u in dao.All())
+                foreach (Usuario entity in dao.All())
                 {
                     ret.Add(new UsuarioModel
                     {
-                        codigo = u.codigo,
-                        nome = u.nome,
-                        cpf = u.cpf,
-                        sexo = u.sexo,
-                        telefone = u.telefone,
-                        data_cadastro = u.data_cadastro,
-                        cidade_id = u.cidade_id,
-                        email = u.email,
-                        senha = u.senha
+                        Codigo = entity.codigo,
+                        Nome = entity.nome,
+                        Cpf = entity.cpf,
+                        Sexo = entity.sexo,
+                        Telefone = entity.telefone,
+                        Data_cadastro = entity.data_cadastro,
+                        Cidade_id = entity.cidade_id,
+                        Email = entity.email,
+                        Senha = entity.senha
                     });
                 }
             }
@@ -96,15 +134,15 @@ namespace Escola.Models
                 {
                     ret = new UsuarioModel
                     {
-                        codigo = entity.codigo,
-                        nome = entity.nome,
-                        cpf = entity.cpf,
-                        sexo = entity.sexo,
-                        telefone = entity.telefone,
-                        data_cadastro = entity.data_cadastro,
-                        cidade_id = entity.cidade_id,
-                        email = entity.email,
-                        senha = entity.senha
+                        Codigo = entity.codigo,
+                        Nome = entity.nome,
+                        Cpf = entity.cpf,
+                        Sexo = entity.sexo,
+                        Telefone = entity.telefone,
+                        Data_cadastro = entity.data_cadastro,
+                        Cidade_id = entity.cidade_id,
+                        Email = entity.email,
+                        Senha = entity.senha
                     };
                 }
             }
@@ -126,7 +164,7 @@ namespace Escola.Models
         public int salvar()
         {
             var ret = 0;
-            var model = recuperarPeloId(codigo);
+            var model = recuperarPeloId(Codigo);
 
             if (model == null)
             {
@@ -134,14 +172,14 @@ namespace Escola.Models
                 {
                     IDao<Usuario> dao = new DaoUsuario(Conexion);
                     Usuario entity = new Usuario();//Objeto tipo Modulos(tabela)
-                    entity.nome = nome;
-                    entity.cpf = cpf;
-                    entity.sexo = sexo;
-                    entity.telefone = telefone;
-                    entity.data_cadastro = data_cadastro;
-                    entity.cidade_id = cidade_id;
-                    entity.email = email;
-                    entity.senha = CriptoHelper.HashMD5(senha);
+                    entity.nome = Nome;
+                    entity.cpf = Cpf;
+                    entity.sexo = Sexo;
+                    entity.telefone = Telefone;
+                    entity.data_cadastro = Data_cadastro;
+                    entity.cidade_id = Cidade_id;
+                    entity.email = Email;
+                    entity.senha = CriptoHelper.HashMD5(Senha);
                     // gravo los datos como registro en la tabla modulos
                     dao.Insert(entity);
                     ret = entity.codigo;
@@ -153,16 +191,16 @@ namespace Escola.Models
                 {
                     IDao<Usuario> dao = new DaoUsuario(Conexion);
                     Usuario entity = new Usuario();//Objeto tipo Modulos(tabela)
-                    entity.nome = nome;
-                    entity.cpf = cpf;
-                    entity.sexo = sexo;
-                    entity.telefone = telefone;
-                    entity.data_cadastro = data_cadastro;
-                    entity.cidade_id = cidade_id;
-                    entity.email = email;
-                    if (!string.IsNullOrEmpty(this.senha))
+                    entity.nome = Nome;
+                    entity.cpf = Cpf;
+                    entity.sexo = Sexo;
+                    entity.telefone = Telefone;
+                    entity.data_cadastro = Data_cadastro;
+                    entity.cidade_id = Cidade_id;
+                    entity.email = Email;
+                    if (!string.IsNullOrEmpty(this.Senha))
                     {
-                        entity.senha = CriptoHelper.HashMD5(senha);
+                        entity.senha = CriptoHelper.HashMD5(Senha);
                     }
                     
                     // gravo los datos como registro en la tabla modulos
