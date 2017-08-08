@@ -55,6 +55,7 @@
     <Compile Include="Conexion.cs" />
     <Compile Include="DAO\DaoAluno.cs" />
     <Compile Include="DAO\DaoBairro.cs" />
+    <Compile Include="DAO\DaoCidade.cs" />
     <Compile Include="DAO\DaoEnderecoAluno.cs" />
     <Compile Include="DAO\DaoEstado.cs" />
     <Compile Include="DAO\DaoMaeAluno.cs" />

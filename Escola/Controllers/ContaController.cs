@@ -13,6 +13,15 @@ namespace Escola.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            ViewBag.CidadeId = new SelectList
+           (
+               new CidadeModel().recuperarLista(),
+               "Id",
+               "Nome"
+               );
+            ViewBag.DropSexoValues = new SelectList(
+                new[] { "Masculino", "Feminino" });
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -20,17 +29,26 @@ namespace Escola.Controllers
         [HttpPost]
         [AllowAnonymous]
 
-        public ActionResult Login(LoginViewModel login, string returnUrl)
+        public ActionResult Login(LoginViewModel login, string returnUrl, string CidadeId)
         {
+            ViewBag.ClienteId = new SelectList
+                (
+                    new CidadeModel().recuperarLista(),
+                    "Id",
+                    "Nome",
+                    CidadeId
+                );
+
+
             if (!ModelState.IsValid)
             {
                 return View(login);
             }
 
-            var usuario = UsuarioModel.validarUsuario(login.Usuario, login.Senha);
+            var usuario = UsuarioModel.validarUsuario(login.Email, login.Senha);
             if (usuario != null)
             {
-                FormsAuthentication.SetAuthCookie(usuario.Nome, login.LembrarMe);
+                FormsAuthentication.SetAuthCookie(usuario.Nome,false);
                 if (Url.IsLocalUrl(returnUrl))
                 {
                     return Redirect(returnUrl);

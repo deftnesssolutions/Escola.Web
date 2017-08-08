@@ -1,6 +1,6 @@
 ﻿@model Escola.Models.LoginViewModel
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Login - Cadastro";
 }
 
 <style>
@@ -21,21 +21,174 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 <p>
-                    @Html.TextBoxFor(m => m.Usuario, new { type = "email", placeholder = "Email" })
-                    @Html.ValidationMessageFor(m => m.Usuario, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(m => m.Email, new { type = "email", placeholder = "Email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                 </p>
 
                     <p>
                         @Html.PasswordFor(m => m.Senha, new { type = "password", placeholder = "Password" })
                         @Html.ValidationMessageFor(m => m.Senha, "", new { @class = "text-danger" })
                     </p>
-                    <h3> @Html.ActionLink("Me Inscrever", "Usuario", "Cadastro")</h3>
+                    <a id="btn-incluir" class="btn btn-primary btn-xs" role="button"><i class="">Me Iscrever</i></a>
 
                     <p><input type="submit" value="Entrar" /></p>
             }
         </section>
 
   </div>
+@Html.Hidden("id_cadastro")
+
+<div id="modal_cadastro" class="form-horizontal invisivel" role="dialog">
+    <div id="msg_mensagem_aviso" class="text-danger invisivel"></div>
+    
+        <fieldset>
+            @Html.AntiForgeryToken()
+            
+            <table cellspacing="10">
+                <tr>
+                    <td>
+                        @Html.Label("txt_nome", "Nome", new { @class = "" })
+                    
+                    
+                        @Html.TextBox("txt_nome", null, new { @class = "input-text", type = "text" })
+                    </td>
+                    <td>
+                        @Html.Label("txt_telefone", "Telefone", new { @class = "" })
+                    
+                        @Html.TextBox("txt_telefone", null, new { @class = "input-text", type = "text" })
+                    </td>
+                    
+                    
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("ddl_cidade", "Cidade", new { @class = "" })
+                        @Html.DropDownList("ddl_cidade", (SelectList)ViewBag.CidadeId , new {@class="appearance-select" })
+                    </td>
+                    <td>
+                        @Html.Label("txt_cpf", "Cpf", new { @class = "" })
+                    
+                        @Html.TextBox("txt_cpf", null, new { @class = "input-text", type = "text" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("ddl_sexo", "Sexo", new { @class = "" })
+                        @Html.DropDownList("ddl_sexo", (SelectList)ViewBag.DropSexoValues, new { @class = "appearance-select" })
+                   </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("txt_email", "Email", new { @class = "" })
+                   
+                        @Html.TextBox("txt_email", null, new { @class = "input-text", type = "email" })
+                    </td>
+               
+               
+                    <td>
+                        @Html.Label("txt_senha", "Password", new { @class = "" })
+                    
+                        @Html.TextBox("txt_senha", null, new { @class = "input-text", type = "password" })
+                    </td>
+                </tr>
+            </table>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="modal-footer">
+                            <a id="btn_sair" class="btn btn-default" role="button" data-dismiss="modal"><i class="glyphicon glyphicon-remove">Sair</i></a>
+                            <a id="btn_confirmar" class="btn btn-primary" role="button"><i class="glyphicon glyphicon-ok">Salvar</i></a>
+                        </div>
+                        <div id="msg_aviso" class="alert alert-warning invisivel">Falta preencher os campos acima.</div>
+                        <div id="msg_erro" class="alert alert-danger invisivel">Ops! Deus ruin!</div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    
+</div>
+
 @section Scripts{
-    @Scripts.Render("~/bundles/jqueyval")
+    <script>
+
+        function add_anti_forgery_token(data) {
+            data.__RequestVerificationToken = $('[name=__RequestVerificationToken]').val();
+            return data;
+        }
+
+        function abrirForm(dados) {
+
+            $('#id_cadastro').val(dados.Codigo);
+            $('#txt_nome').val(dados.Nome);
+            $('#txt_cpf').val(dados.Cpf);
+            $('#ddl_sexo').val(dados.Sexo);
+            $('#txt_telefone').val(dados.Telefone);
+            $('#CidadeId').val(dados.Cidade_id);
+            $('#txt_email').val(dados.Email);
+            $('#txt_senha').val(dados.Senha);
+
+            var modal_cadastro = $('#modal_cadastro');
+            $('#msg_mensagem_aviso').empty();
+            $('#msg_aviso').hide();
+            $('#msg_mensagem_aviso').hide();
+            $('#msg_erro').hide();
+            bootbox.dialog({
+                title: '@ViewBag.Title',
+                message: modal_cadastro
+            })
+            .on('shown.bs.modal', function () {
+                modal_cadastro.show(0, function () {
+                    $('#txt_nome').focus();
+                });
+            })
+            .on('hidden.bs.modal', function () {
+                modal_cadastro.hide().appendTo('body');
+            });
+        }
+
+        $(document).on('click', '#btn-incluir', function () {
+            abrirForm({ id: 0, nome: '', Cpf: '',Sexo: '',Telefone :'',Cidade_id: '', Email:'', Senha:'' });
+        })
+        
+        .on('click', '#btn_confirmar', function () {
+            var btn = $(this),
+                url = '@Url.Action("SalvarUsuario","Cadastro")',
+                param = {
+                    Codigo: $('#id_cadastro').val(),
+                    Nome: $('#txt_nome').val(),
+                    Cpf: $('#txt_cpf').val(),
+                    Sexo: $('#ddl_sexo').val(),
+                    Telefone: $('#txt_telefone').val(),
+                    Cidade_id: $('#ddl_cidade').val(),
+                    Email: $('#txt_email').val(),
+                    Senha: $('#txt_senha').val(),
+                };
+            $.post(url, add_anti_forgery_token(param), function (response) {
+                if (response.Resultado == "OK") {
+                    $('#modal_cadastro').parents('.bootbox').modal('hide');
+                }
+                else if (response.Resultado == "ERRO") {
+                    $('#msg_aviso').hide();
+                    $('#msg_mensagem_aviso').hide();
+                    $('#msg_erro').show();
+                }
+                else if (response.Resultado == "AVISO") {
+                    $('#msg_mensagem_aviso').empty();
+                    $('#msg_mensagem_aviso').html(formatar_mensagem_aviso(response.Mensagems));
+                    $('#msg_aviso').show();
+                    $('#msg_mensagem_aviso').show();
+                    $('#msg_erro').hide();
+                }
+            });
+        });
+
+        function formatar_mensagem_aviso(mensagems) {
+            var ret = '';
+            for (var i = 0; i < mensagems.length; i++) {
+                ret += '<li>' + mensagems[i] + '</li>';
+            }
+            return '<ul>' + ret + '</ul>';
+        }
+</script>
+@Scripts.Render("~/bundles/jqueyval")
 }

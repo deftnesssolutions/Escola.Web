@@ -3,8 +3,9 @@
 @{
     ViewBag.Title = "Cadastro de Usuarios";
 }
+@Html.Hidden("id_cadastro")
 <div class="form_cadastro">
-    <div class="form-content">
+    
         <div id="msg_mensagem_aviso" class="text-danger invisivel"></div>
         <!-- DADOS PESSOAIS-->
         <fieldset>
@@ -16,45 +17,35 @@
                         @Html.Label("txt_nome", "Nome", new { @class = "" })
                     </td>
                     <td align="left">
-                        @Html.TextBox("txt_nome", null, new { @class = "input-text", type="text" })
+                        @Html.TextBox("txt_nome", null, new { @class = "input-text", type = "text" })
                     </td>
                     <td>
-                        @Html.Label("txt_sex", "Sexo", new { @class = "" })
+                        @Html.Label("ddl_sexo", "Sexo", new { @class = "" })
                     </td>
                     <td align="left">
-                        @Html.DropDownList("sexo",(SelectList) ViewBag.DropSexoValues, new {@class="appearance-select" });
+                        @Html.DropDownList("ddl_sexo",(SelectList)ViewBag.DropSexoValues, new {@class="appearance-select" })
                     </td>
                     <td>
-                        <label for="cidade">Cidade:</label>
+                        @Html.Label("ddl_cidade", "Cidade", new { @class = "" })
                     </td>
                     <td align="left">
-                        <select name="cidade" class="appearance-select">
-                            <option value="">Selecione</option>
-                            <option value="M">Masculino</option>
-                            <option value="F">Feminino</option>
-                        </select>
+                        @Html.DropDownList("ddl_cidade", (SelectList)ViewBag.CidadeId , new {@class="appearance-select" })
                     </td>
                 </tr>
                 <tr>
+                    
                     <td>
-                        <label for="rg">RG: </label>
+                        @Html.Label("txt_cpf", "Cpf", new { @class = "" })
                     </td>
                     <td align="left">
-                        <input type="text" class="input-text" name="rg" size="13" maxlength="13">
+                        @Html.TextBox("txt_cpf", null, new { @class = "input-text", type = "text" })
                     </td>
 
                     <td>
-                        <label>CPF:</label>
+                        @Html.Label("txt_telefone", "Telefone", new { @class = "" })
                     </td>
                     <td align="left">
-                        <input type="text" name="cpf" class="input-text" size="9" maxlength="9">
-                    </td>
-
-                    <td>
-                        <label>Telefone:</label>
-                    </td>
-                    <td align="left">
-                        <input type="text" name="telefone" class="input-text" size="9" maxlength="10">
+                        @Html.TextBox("txt_telefone", null, new { @class = "input-text", type = "text" })
                     </td>
                 </tr>
             </table>
@@ -69,39 +60,62 @@
             <table cellspacing="10">
                 <tr>
                     <td>
-                        <label for="email">E-mail: </label>
+                        @Html.Label("txt_email", "Email", new { @class = "" })
                     </td>
                     <td align="left">
-                        <input type="email" class="input-text" name="email">
+                        @Html.TextBox("txt_email", null, new { @class = "input-text", type = "email" })
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="pass">Senha: </label>
+                        @Html.Label("txt_pass", "Password", new { @class = "" })
                     </td>
                     <td align="left">
-                        <input type="password" class="input-text" name="pass">
+                        @Html.TextBox("txt_pass", null, new { @class = "input-text", type = "password" })
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <label for="passconfirm">Confirme a senha: </label>
-                    </td>
-                    <td align="left">
-                        <input type="password" class="input-text" name="passconfirm">
-                    </td>
-                </tr>
+             
             </table>
         </fieldset>
         <br />
-        <div><input type="submit" class="button2" value="Cadastrar"></div>
+        <div><input type="submit" role="button" class="button2" value="Cadastrar"></div>
 
     </div>
-</div>
 
 
+@section Scripts{
+    <script>
 
+        function add_anti_forgery_token(data) {
+            data.__RequestVerificationToken = $('[name=__RequestVerificationToken]').val();
+            return data;
+        }
 
+        function abrirForm(dados) {
+            $('#id_cadastro').val(dados.Codigo);
+            $('#txt_nome').val(dados.Nome);
+            $('#txt_nome').val(dados.Cpf);
+            $('#txt_nome').val(dados.Sexo);
+            $('#txt_nome').val(dados.Telefone);
+            $('#txt_nome').val(dados.Cidade_id);
+            $('#txt_nome').val(dados.Email);
+            $('#txt_senha').val(dados.Senha);
 
+        }
 
-
+        $(document).on('click', '#submit', function () {
+            var btn = $(this),
+                url = '@Url.Action("SalvarUsuario","Cadastro")',
+                param = {
+                    Codigo: $('#id_cadastro').val(),
+                    Nome: $('#txt_nome').val(),
+                    Cpf: $('#txt_login').val(),
+                    Sexo: $('#txt_senha').val(),
+                    Telefone: $('#txt_senha').val(),
+                    Cidade_id: $('#txt_senha').val(),
+                    Email: $('#txt_senha').val(),
+                    Senha: $('#txt_senha').val()
+                };
+        });
+    </script>
+}
